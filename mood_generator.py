@@ -1,30 +1,27 @@
 import json
 import random
 
-# Открываем файл и загружаем данные
-with open("phrases.json", "r", encoding = "utf-8") as file:
-    data = json.load(file)
+def load_phrases(filename="phrases.json"):
+    with open(filename, "r", encoding="utf-8") as file:
+        return json.load(file)
 
-# Запускаем бесконечный цикл
+def get_randome_phrase(mood, data):
+    mood = mood.strip().lower()
+    if mood in data:
+        return random.choice(data[mood])
+    return "Такого настроения Я не знаю. Хорошего тебе дня!"
+
+data = load_phrases()
+
 while True:
-# Запрос настроения пользователя
- mood = input("Укажите свое настроение (очень плохое, плохое, так себе):").strip().lower()   
-# Описание:     
-# input() — запрашивает у пользователя ввод.
-# .strip() — убирает лишние пробелы вокруг введенного текста.
-# .lower() — переводит все символы в нижний регистр, чтёобы быть уверенным, что сравнение 
-# будет правильным (например, "Хорошее" и "хорошее" будут одинаковыми).
+    mood = input("Укажите свое настроение (очень плохое, плохое, так себе):").strip().lower()
 
-# Если настроение найдено в данных
- if mood in data:
-# Выбирает случайную фразу из списка фраз для этого настроения.    
-    print(random.choice(data[mood]))
+    phrase = get_randome_phrase(mood, data)
 
- else:
-    print("Такого настроения я не знаю. Но все равно желаю тебе хорошего настроения!")
-# Запрашивает у пользователя желает он продолжить или хочет выйти
- repeat = input("Хотите попробывать снова: (да/нет?)").strip().lower()
-# Если ответ не "да", выводит прощальное сообщение и с помощью break прерывает цикл.
- if repeat != "да":
-    print("Досвитания! Хорошего настроения тебе!")
-    break
+    print(phrase)
+
+    repeat = input("Хотите попробовать снова? (да/нет): ").strip().lower()
+
+    if repeat != "да":
+        print("Досвидания! Хорошего настроения тебе!")
+        break  
